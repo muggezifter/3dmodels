@@ -11,32 +11,31 @@ pedestal_height=8;
 pedestal_thickness=2;
 
 module roof(cw=cabin_width,ro=roof_overhang,rt=roof_thickness){
-    cube(size=[cw+(2*ro),cw+(2*ro),rt], center=true);
+    cube([cw+(2*ro),cw+(2*ro),rt], true);
 }
 
 module cabin(cw=cabin_width,ch=cabin_height,ct=cabin_wall_thickness,cf=cabin_floor_thickness,dw=door_width,dh=door_height) {
     difference(){
-        difference() {
             // cabin outer dimensions
-            cube(size=[cw,cw,ch],center=true);
+            cube([cw,cw,ch],true);
             // cabin inner dimensions
             translate([0,0,cf])
-                    cube(size=[cw-(2*ct),cw-(2*ct),ch],center=true);   
-        }
-        translate([(ct-cabin_width)/2,0,cf-((ch-dh)/2)])
-            // doorway punch
-            cube(size=[2*ct,dw,dh],center=true);
-    }
+                    cube([cw-(2*ct),cw-(2*ct),ch],true); 
+            // doorway punch  
+            translate([(ct-cabin_width)/2,0,cf-((ch-dh)/2)])
+                cube([2*ct,dw,dh],true);
+   }
 }
 
 module pedestal(pw=pedestal_width,ph=pedestal_height,pt=pedestal_thickness) {
            difference() {
-            cube([pw,pw,0.5+ph],center=true);
+            cube([pw,pw,0.5+ph],true);
             translate([0,0,-1])
-                cube([pw-pt,pw-pt,ph+2],center=true);
+                cube([pw-pt,pw-pt,ph+2],true);
         }
 }
-    //translate([0,0,100])
+
+//translate([0,0,100])
 union(){
     // roof:
     translate([0,0,(cabin_height+roof_thickness)/2])
