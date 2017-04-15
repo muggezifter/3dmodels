@@ -11,7 +11,7 @@ pedestal_height=8;
 pedestal_thickness=2;
 
 module roof(cw=cabin_width,ro=roof_overhang,rt=roof_thickness){
-    cube([cw+(2*ro),cw+(2*ro),rt], true);
+    cube([cw+(2*ro),cw+(2*ro),rt],true);
 }
 
 module cabin(cw=cabin_width,ch=cabin_height,ct=cabin_wall_thickness,cf=cabin_floor_thickness,dw=door_width,dh=door_height) {
