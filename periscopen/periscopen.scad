@@ -9,42 +9,24 @@ door_height=180;
 pedestal_width=115;
 pedestal_height=8;
 pedestal_thickness=2;
+leg_width=5;
+leg_height=15;
+leg_offset=1;
 
-module roof(cw=cabin_width,ro=roof_overhang,rt=roof_thickness){
-    cube([cw+(2*ro),cw+(2*ro),rt],true);
-}
-
-module cabin(cw=cabin_width,ch=cabin_height,ct=cabin_wall_thickness,cf=cabin_floor_thickness,dw=door_width,dh=door_height) {
-    difference(){
-            // cabin outer dimensions
-            cube([cw,cw,ch],true);
-            // cabin inner dimensions
-            translate([0,0,cf])
-                    cube([cw-(2*ct),cw-(2*ct),ch],true); 
-            // doorway punch  
-            translate([(ct-cabin_width)/2,0,cf-((ch-dh)/2)])
-                cube([2*ct,dw,dh],true);
-   }
-}
-
-module pedestal(pw=pedestal_width,ph=pedestal_height,pt=pedestal_thickness) {
-           difference() {
-            cube([pw,pw,0.5+ph],true);
-            translate([0,0,-1])
-                cube([pw-pt,pw-pt,ph+2],true);
-        }
-}
+use <modules/roof.scad>
+use <modules/cabin.scad>
+use <modules/pedestal.scad>
 
 //translate([0,0,100])
 union(){
     // roof:
     translate([0,0,(cabin_height+roof_thickness)/2])
-        roof();
+        roof(cabin_width,roof_overhang,rt=roof_thickness);
     // cabin:
-    cabin();
+    cabin(cabin_width,cabin_height,cabin_wall_thickness,cabin_floor_thickness,door_width,door_height);
     // pedestal:
     translate([0,0,0.5-(cabin_height+pedestal_height)/2])
-        pedestal();
+        pedestal(pedestal_width,pedestal_height,pedestal_thickness,leg_width,leg_height,leg_offset);
 }
         
     
