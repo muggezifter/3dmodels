@@ -1,22 +1,22 @@
-cabin_width=125;
-cabin_height=200;
-cabin_wall_thickness=2;
-cabin_floor_thickness=2;
-roof_thickness=4;
-roof_overhang=5;
-door_width=65;
-door_height=180;
-pedestal_width=115;
-pedestal_height=8;
-pedestal_thickness=2;
-leg_width=8;
-leg_height=15;
-leg_offset=1;
-lower_periscope_diameter=25;
-lower_periscope_h=5;
-lower_periscope_v=60;
-lower_periscope_wall_thickness=1;
-periscope_distance_from_center=50;
+cabin_width=1250;
+cabin_height=2000;
+cabin_wall_thickness=20;
+cabin_floor_thickness=20;
+roof_thickness=40;
+roof_overhang=50;
+door_width=650;
+door_height=1800;
+pedestal_width=1150;
+pedestal_height=80;
+pedestal_thickness=20;
+leg_width=80;
+leg_height=150;
+leg_offset=10;
+lower_periscope_diameter=250;
+lower_periscope_h=50;
+lower_periscope_v=600;
+lower_periscope_wall_thickness=10;
+periscope_distance_from_center=500;
 
 use <modules/roof.scad>
 use <modules/cabin.scad>
@@ -38,7 +38,8 @@ union(){
             
             );
     // cabin:
-    cabin(cabin_width,cabin_height,cabin_wall_thickness,cabin_floor_thickness,door_width,door_height);
+    cabin(
+        cabin_width,cabin_height,cabin_wall_thickness,cabin_floor_thickness,door_width,door_height);
     // pedestal:
     translate([0,0,0.5-(cabin_height+pedestal_height)/2])
         pedestal(pedestal_width,pedestal_height,pedestal_thickness,leg_width,leg_height,leg_offset);

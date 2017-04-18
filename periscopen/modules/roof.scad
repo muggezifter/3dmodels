@@ -7,7 +7,7 @@ lower_periscope_v=40;
 lower_periscope_wall_thickness=1;
 periscope_distance_from_center=50;
 
-use<../../shared/periscope_knee.scad>
+use<../../shared/half_periscope.scad>
 
 module roof(
     cw=cabin_width,
@@ -24,7 +24,7 @@ module roof(
        rotate(r)
           translate ([pdc,0,0.5-(rt/2)])
             rotate(270)
-                periscope_knee(lpd,lph+0.5,lpv,lpw);
+                half_periscope(lpd,lph+0.5,lpv,lpw);
     }
     module punch(r) {
         rotate(r)

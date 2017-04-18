@@ -1,9 +1,9 @@
-cabin_width=125;
-cabin_height=200;
-cabin_wall_thickness=2;
-cabin_floor_thickness=2;
-door_width=65;
-door_height=180;
+cabin_width=1250;
+cabin_height=2000;
+cabin_wall_thickness=20;
+cabin_floor_thickness=20;
+door_width=650;
+door_height=1800;
 
 module cabin(cw=cabin_width,ch=cabin_height,ct=cabin_wall_thickness,cf=cabin_floor_thickness,dw=door_width,dh=door_height) {
     difference(){
