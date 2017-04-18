@@ -1,9 +1,14 @@
-diameter = 10;
-horizontal_leg = 3;
-vertical_leg = 7;
-wall_thickness = 0.5;
+diameter=10;
+horizontal_leg=3;
+vertical_leg=7;
+wall_thickness=0.5;
 
-module half_periscope(d=diameter, h=horizontal_leg, v=vertical_leg, w=wall_thickness) {
+module half_periscope(
+    d=diameter,
+    h=horizontal_leg,
+    v=vertical_leg,
+    w=wall_thickness
+) {
   translate([-d/2,-(h+d/2),-d-v])
     rotate([90,0,90])
         difference(){
