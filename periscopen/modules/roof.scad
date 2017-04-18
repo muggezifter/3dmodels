@@ -5,6 +5,12 @@ lower_periscope_diameter=20;
 lower_periscope_h=5;
 lower_periscope_v=40;
 lower_periscope_wall_thickness=1;
+upper_periscope_diameter=27;
+upper_periscope_h=3;
+upper_periscope_v_low=10;
+upper_periscope_v_medium=25;
+upper_periscope_v_high=40;
+upper_periscope_wall_thickness=1.5;
 periscope_distance_from_center=50;
 
 use<../../shared/half_periscope.scad>
@@ -17,6 +23,12 @@ module roof(
     lpv=lower_periscope_v,
     lph=lower_periscope_h,
     lpw=lower_periscope_wall_thickness,
+    upd=upper_periscope_diameter,
+    upvl=upper_periscope_v_low,
+    upvm=upper_periscope_v_medium,
+    upvh=upper_periscope_v_high,
+    uph=upper_periscope_h,
+    upw=upper_periscope_wall_thickness,
     pdc=periscope_distance_from_center
 ){
     module lower_periscope(r)
@@ -26,6 +38,15 @@ module roof(
             rotate(270)
                 half_periscope(lpd,lph+0.5,lpv,lpw);
     }
+    
+    module upper_periscope(r,v,r2)
+    {
+       rotate(r)
+          translate ([pdc,0,0.5-(rt/2)])
+            rotate([180,0,r2])
+                half_periscope(upd,uph+0.5,v,upw);
+    }
+    
     module punch(r) {
         rotate(r)
             translate ([pdc,0,0])
@@ -44,6 +65,10 @@ module roof(
         lower_periscope(135);
         lower_periscope(225);
         lower_periscope(315);
+        upper_periscope(45,upvm,0);
+        upper_periscope(135,upvl,270);
+        upper_periscope(225,upvm,180);
+        upper_periscope(315,upvh,90);
     }
     
 
