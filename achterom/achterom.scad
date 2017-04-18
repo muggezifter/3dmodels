@@ -1,6 +1,6 @@
 cabin_width=1200;
 cabin_height=1800;
-cabin_wall_thickness=20;
+cabin_wall_thickness=2.5;
 cabin_skylight_width=800;
 periscope_elevation=800;
 pipe_width=2000;
@@ -37,6 +37,7 @@ module achterom(
     dw=door_width,
     dh=door_height,
     de=door_elevation,
+    idw=inside_door_post_width,
     sw=stand_width,
     sh=stand_height,
     sld=stand_leg_diameter,
@@ -57,11 +58,15 @@ module achterom(
     }
     
     module cabin() {
-        difference(){
-            box(cw,cw,ch,cwt);
-            skylight_punch();
-            periscope_punch();
-            door_punch();
+        union() {
+            difference(){
+                box(cw,cw,ch,cwt);
+                skylight_punch();
+                periscope_punch();
+                door_punch();
+            }
+            translate([(dw+idw)/-2,cw/-2,100])
+                cube([dw+idw,cwt,dh+idw]);
         }
     }
     
