@@ -10,6 +10,7 @@ pipe_wall_thickness=10;
 door_width=600;
 door_height=1000;
 door_elevation=100;
+inside_door_post_width=60;
 stand_width=1000;
 stand_height=800;
 stand_leg_diameter=40;

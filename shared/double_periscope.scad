@@ -16,7 +16,7 @@ module double_periscope(
     module half(r) {
         rotate([0,0,r])
         translate([0,(w-d)/2,0])
-            periscope(d,w/2-d+t,(w-g)/2-d,h,t,0);
+            periscope(d,w/2-d+t,0,(w-g)/2-d,0,h,t,0);
     }
     
     union() {
