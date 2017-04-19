@@ -13,6 +13,11 @@ periscopes_height=1300;
 periscopes_diameter=350;
 periscopes_wall_thickness=15;
 periscopes_elevation=800;
+undercarriage_width=1680;
+undercarriage_depth=640;
+undercarriage_height=30;
+undercarriage_beam_width=100;
+castor_height=120;
 
 
 // initial camera distance, rotation and translation
@@ -21,6 +26,8 @@ $vpr=[75,0,315];
 $vpt=[0,0,1000];
 
 use <../shared/double_periscope.scad>
+use <../shared/pivoting_caster.scad>
+use <../shared/caster.scad>
 
 module tweezitter(
     cw=cabin_width,
@@ -29,15 +36,23 @@ module tweezitter(
     cwt=cabin_wall_thickness,
     cbt=cabin_bottom_thickness,
     crf=cabin_roof_slope,
+    
     sw=seat_width,
     sd=seat_depth,
     st=seat_thickness,
     se=seat_elevation,
+    
     pw=periscopes_width,
     ph=periscopes_height,
     pd=periscopes_diameter,
     pwt=periscopes_wall_thickness,
     pe=periscopes_elevation,
+    
+    uw=undercarriage_width,
+    ud=undercarriage_depth,
+    uh=undercarriage_height,
+    ubw=undercarriage_beam_width,
+    uch=castor_height,
 ){
     module halfcabin() {
         module roof() {
@@ -94,21 +109,47 @@ module tweezitter(
         cube([cw/2,pd-2*pwt,pd-2*pwt]);
     }
     
-    difference() {
-        union() {
-            difference() {
-                halfcabin();
-                punch();
+    module undercarriage() {
+       translate([0,0,uh/-2])
+            union() {
+                difference() {
+                    cube([uw,ud,uh],true);
+                    translate([0,(ud+ubw)/2,-0.45*uh])
+                        cube([uw-2*ubw,ud,2*uh],true);
+                    translate([0,(ud+ubw)/-2,-0.45*uh])
+                        cube([uw-2*ubw,ud,2*uh],true);
+                }
+                translate([(uw-ubw)/2,(ud-ubw)/2,-uch-uh/2])
+                    rotate([0,0,90])
+                        caster(uch);
+                translate([(uw-ubw)/2,(ud-ubw)/-2,-uch-uh/2])
+                    rotate([0,0,90])
+                        caster(uch);
+                translate([(uw-ubw)/-2,(ud-ubw)/2,-uch-uh/2])
+                        pivoting_caster(uch,70);
+                translate([(uw-ubw)/-2,(ud-ubw)/-2,-uch-uh/2])
+                        pivoting_caster(uch,70);
             }
-            rotate([0,0,180])
+    }
+    
+    translate([0,0,uh+uch]){
+    difference() {
+            union() {
                 difference() {
                     halfcabin();
                     punch();
-                }
-            seat();
-            periscopes();
-            }
+                   }
+                rotate([0,0,180])
+                    difference() {
+                        halfcabin();
+                        punch();
+                    }
+                seat();
+                periscopes();
+                undercarriage();
+           }
         }
+    }
 }
 
 tweezitter();
