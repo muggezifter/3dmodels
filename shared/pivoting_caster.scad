@@ -1,5 +1,5 @@
-height=200;
-rotation=0;
+height=2000;
+rotation=70;
 
 module pivoting_caster(h=height, r=rotation) {
     
@@ -9,7 +9,7 @@ module pivoting_caster(h=height, r=rotation) {
         cylinder(h/10,0.3*h,0.3*h);
     translate([0,0,0.4*h])
     rotate([0,0,r])
-        translate([0,-55,0])
+        translate([0,-0.275*h,0])
             rotate([0,90,0])
                 union(){
                 cylinder(0.25*h,0.4*h,0.4*h,true);
