@@ -18,16 +18,17 @@ periscope_diameter=500;
 periscope_top_horizontal_tube_length=80;
 periscope_top_flange=100;
 periscope_bottom_horizontal_tube_length=80;
-periscope_bottom_flange=100;
-periscope_height=1600;
+periscope_bottom_flange=0;
+periscope_height=1550;
 periscope_wall_thickness=18;
 periscope_twist=0;
-periscope_elevation=600;
+periscope_elevation=650;
 
 door_width=600;
 door_height=1200;
 door_elevation=50;
 door_offset_left=200;
+door_angle=45;
 
 // initial camera distance, rotation and translation
 $vpd=10000;
@@ -57,6 +58,7 @@ module spiegelkijker(
     dh=door_height,
     de=door_elevation,
     dol=door_offset_left,
+    da=door_angle,
     pd=periscope_diameter,
     pth=periscope_top_horizontal_tube_length,
     ptf=periscope_top_flange,
@@ -76,15 +78,18 @@ module spiegelkijker(
             translate([(cwt-cw)/2,(bd+cwt)/-2,cwt/-2])
                 cube([cw-cwt,cd-cso-tan(90-cba)*(cse-csh),ch]);
             //door punch
-            translate([0,bd/2-dol,de])
+            translate([0,bd/2-dol,de-bwt/4])
                 rotate([0,0,180])
-                    cube([bh,dw,dh]);
+                    cube([bh,dw-bwt/8,dh-bwt/8]);
             //periscope_punch
             translate([pwt/2-pd/2,(cd+pwt)/2-0.1*pd,pe+0.55*pd])
             cube([pd-pwt,cd,ph]);
         }
         translate([0,cd/2+0.4*pd,pe])
             periscope(pd,pth,ptf,pbh,pbf,ph,pwt,pt);
+        
+            rotate([0,0,180]);
+            cube([bwt,dw,dh]);
     }
 }
 
