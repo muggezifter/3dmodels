@@ -7,8 +7,11 @@ doorpost_depth=7;
 doorpost_protrude=1;
 treshold_height=1;
 door_open_angle=60;
+doorhandle_size=12;
 
 $vpt=([0,0,door_height/2]);
+
+use <../../shared/doorhandle.scad>
 
 module door(dw=door_width,
     dh=door_height,
@@ -18,13 +21,19 @@ module door(dw=door_width,
     dpd=doorpost_depth,
     dpp=doorpost_protrude,
     th=treshold_height,
-    doa=door_open_angle) {
+    doa=door_open_angle,
+    dhs=doorhandle_size) {
     
         
     module panel(extra,rotation) {
         translate([-dw/2,-extra,th]) 
             rotate([0,0,rotation])
+                union() {
                 cube([dw,dt+extra,dh]); 
+                translate([dw-(0.4*dhs),(dt+extra)/2,dh/2])
+                    rotate([0,0,270])  
+                    doorhandle(dhs,dt);
+        }
     }  
     module punch()
     {

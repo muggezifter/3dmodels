@@ -16,6 +16,7 @@ doorpost_inner_width=630;
 doorpost_depth=60;
 doorpost_protrude=10;
 treshold_height=10;
+doorhandle_size=140;
 
 stand_width=1300;
 stand_height=80;
@@ -68,6 +69,7 @@ module periscopen(
     dpd=doorpost_depth,
     dpp=doorpost_protrude,
     dth=treshold_height,
+    dhs=doorhandle_size,
     // stand:obhunting.
     sw=stand_width,
     sh=stand_height,
@@ -99,7 +101,7 @@ module periscopen(
         // door:
         translate([-(dpp+cw/2),0,(cft-ch/2)])
         rotate([0,0,-90])
-            door(dw,dh,dt,dpw,dpiw,dpd,dpp,dth,doa);
+            door(dw,dh,dt,dpw,dpiw,dpd,dpp,dth,doa,dhs);
         // stand:
         translate([0,0,0.5-(ch+sh)/2])
             stand(sw,sh,st,lw,lh,lo);
