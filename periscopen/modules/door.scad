@@ -29,7 +29,11 @@ module door(dw=door_width,
         translate([-dw/2,-extra,th]) 
             rotate([0,0,rotation])
                 union() {
-                cube([dw,dt+extra,dh]); 
+                difference() {
+                    cube([dw,dt+extra,dh]);
+                    translate([dw-0.45*dhs,-dhs/2,dh/2-0.5*dhs] )
+                        cube([0.125*dhs,dhs,0.25*dhs]);
+                }    
                 translate([dw-(0.4*dhs),(dt+extra)/2,dh/2])
                     rotate([0,0,270])  
                     doorhandle(dhs,dt);
