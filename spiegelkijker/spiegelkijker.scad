@@ -25,14 +25,18 @@ periscope_twist=0;
 periscope_elevation=650;
 
 door_width=600;
-door_height=1200;
+door_height=1400;
 door_elevation=50;
 door_offset_left=200;
-door_angle=45;
+door_angle=60;
+
+leg_diameter=60;
+leg_height=40;
+leg_offset=30;
 
 // initial camera distance, rotation and translation
 $vpd=10000;
-$vpr=[75,0,315];
+$vpr=[73,0,226];
 $vpt=[0,0,1000];
 
 use <../shared/box.scad>
@@ -68,29 +72,49 @@ module spiegelkijker(
     pwt=periscope_wall_thickness,
     pt=periscope_twist,
     pe=periscope_elevation,
+    ld=leg_diameter,
+    lh=leg_height,
+    lo=leg_offset,
     ){
-    union() {
-        translate([-cw/2,-bd/2,0])
-            hollow_chair(cw,ch,cd,cbt,cta,cse,csh,cso,cba,cwt);
-        difference(){
-            box(bw,bd,bh,bwt);
-            // chair punch:
-            translate([(cwt-cw)/2,(bd+cwt)/-2,cwt/-2])
-                cube([cw-cwt,cd-cso-tan(90-cba)*(cse-csh),ch]);
-            //door punch
-            translate([0,bd/2-dol,de-bwt/4])
-                rotate([0,0,180])
-                    cube([bh,dw-bwt/8,dh-bwt/8]);
-            //periscope_punch
-            translate([pwt/2-pd/2,(cd+pwt)/2-0.1*pd,pe+0.55*pd])
-            cube([pd-pwt,cd,ph]);
+    mirror([0,1,0])
+    translate([0,0,lh])
+        union() {
+            // chair
+            translate([-cw/2,-bd/2,0])
+                hollow_chair(cw,ch,cd,cbt,cta,cse,csh,cso,cba,cwt,false);
+            // cabin
+            difference(){
+                box(bw,bd,bh,bwt);
+                // chair punch:
+                translate([(cwt-cw)/2,(bd+cwt)/-2,cwt/-2])
+                    cube([cw-cwt,cd-cso-tan(90-cba)*(cse-csh),ch]);
+                // door punch
+                translate([0,bd/2-dol+bwt/8,de-bwt/8])
+                    rotate([0,0,180])
+                        cube([bh,dw+bwt/4,dh+bwt/4]);
+                // periscope_punch
+                translate([pwt/2-pd/2,(cd+pwt)/2-0.1*pd,pe+0.55*pd])
+                cube([pd-pwt,cd,ph]);
+            }
+            // periscope
+            translate([0,cd/2+0.4*pd,pe])
+                periscope(pd,pth,ptf,pbh,pbf,ph,pwt,pt);
+            // door    
+            translate([-bw/2+bwt,bd/2-dol,de])
+                rotate([0,0,180-da])
+                    cube([bwt,dw,dh]);
+            //legs
+            lx = bw/2-ld/2-lo; // leg y
+            ly = bd/2-ld/2-lo; // leg y
+            translate([lx,ly,lh/-2])
+                cube([ld,ld,lh],true);
+            translate([-lx,ly,lh/-2])
+                cube([ld,ld,lh],true);
+            translate([lx,-ly,lh/-2])
+                cube([ld,ld,lh],true);  
+            translate([-lx,-ly,lh/-2])
+                cube([ld,ld,lh],true);
         }
-        translate([0,cd/2+0.4*pd,pe])
-            periscope(pd,pth,ptf,pbh,pbf,ph,pwt,pt);
-        
-            rotate([0,0,180]);
-            cube([bwt,dw,dh]);
-    }
 }
 
 spiegelkijker();
