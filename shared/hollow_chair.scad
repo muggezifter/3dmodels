@@ -13,6 +13,8 @@ armrest_height=55;
 armrest_width=12;
 armrest_overlap=5;
 
+use <./solid_chair.scad>
+
 module hollow_chair(
     w=width,
     h=height,
@@ -29,68 +31,36 @@ module hollow_chair(
     aw=armrest_width,
     ao=armrest_overlap
 ){
-    module armrest() {
-        linear_extrude(aw)
-            polygon([
-                [0,0],
-                [d-tan(90-ba)*(se-sh/2),0],
-                [d+tan(90-ba)*(ah-(se-sh/2)),ah],
-                [0,ah]]);
-    }
-
-    module body() {
-        linear_extrude(w)
-                polygon([
-                    [0,0],
-                    [d-so-tan(90-ba)*(se-sh),0],
-                    [d-so,se-sh],
-                    [d,se-sh],
-                    [d,se],
-                    [bt+tan(90-ta)*(h-se),se],
-                    [bt,h],
-                    [0,h]
-                ]);
-    }
-
-    module armrest_punch() {
-       translate([-(wt/cos(90-ba)),-wt,0]) 
+module armrest_punch() {
+    translate([-(wt/cos(90-ba)),-wt,0]) 
         linear_extrude(aw-2*wt)
             polygon([
                 [0,0],
                 [d-tan(90-ba)*(se-sh/2),0],
                 [d+tan(90-ba)*(ah-(se-sh/2)),ah],
                 [0,ah]]);
-    }
+}
 
-    module body_punch() {
-        translate([0,0,wt])
-            linear_extrude(w-(2*wt))
-                polygon([
-                    [-wt,-wt],[d-so-tan(90-ba)*(se-sh)-(wt/cos(90-ba)),-wt],
-                    [d-so-tan(90-ba)*(se-sh)-(wt/cos(90-ba)),0],
-                    [d-so-(wt/cos(90-ba)),se-sh+wt],
-                    [d-wt,se-sh+wt],
-                    [d-wt,se-wt],
-                    [bt+tan(90-ta)*(h-se)-(wt/cos(90-ta)),se-wt],
-                    [bt-(wt/cos(90-ta)),h-wt],
-                    [-wt,h-wt]
-                ]);
-    }
+module body_punch() {
+    translate([0,0,wt])
+        linear_extrude(w-(2*wt))
+            polygon([
+                [-wt,-wt],[d-so-tan(90-ba)*(se-sh)-(wt/cos(90-ba)),-wt],
+                [d-so-tan(90-ba)*(se-sh)-(wt/cos(90-ba)),0],
+                [d-so-(wt/cos(90-ba)),se-sh+wt],
+                [d-wt,se-sh+wt],
+                [d-wt,se-wt],
+                [bt+tan(90-ta)*(h-se)-(wt/cos(90-ta)),se-wt],
+                [bt-(wt/cos(90-ta)),h-wt],
+                [-wt,h-wt]]);
+}
 
-    translation=ab?aw-ao:0;
+translation=ab?aw-ao:0;
 
+difference(){
+    solid_chair(w,h,d,bt,ta,se,sh,so,ba,wt,ab,ah,aw,ao);
     translate([translation, 0,0])
-    rotate([90,0,90])
-        difference(){
-            union(){
-                body();
-                if (ab) {
-                    translate([0,0,ao-aw])
-                        armrest();
-                    translate([0,0,w-ao])
-                        armrest();
-                }
-            }
+        rotate([90,0,90])
             union(){
                 body_punch();
                 if (ab) {
@@ -100,8 +70,7 @@ module hollow_chair(
                         armrest_punch();
                 }
             }
-
-        }
+      }
 }
 
 
