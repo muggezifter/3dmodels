@@ -1,7 +1,7 @@
 width=1800;
 depth=1800;
 height=2200;
-roof_slope=30;
+roof_slope=32;
 wall_thickness=50;
 roof_thickness=20;
 floor_thickness=30;
@@ -21,7 +21,7 @@ chair_armrest_height=550;
 chair_armrest_width=120;
 chair_armrest_overlap=50;
 
-table_width=1000;
+table_width=1150;
 table_depth=600;
 table_height=50;
 table_top_elevation=800;
@@ -31,7 +31,7 @@ table_leg_diameter=50;
 table_overhang=100;
 
 ladder_width=400;
-ladder_height=1800;
+ladder_height=1750;
 ladder_depth=300;
 ladder_rod_diameter=40;
 ladder_elevation=200;
@@ -40,10 +40,16 @@ ladder_outside_steps=[500,750,1000,1250]; // top
 ladder_supports=[700,1300]; // top
 ladder_out_of_center=240;
 
+undercarriage_beam_width=150;
+undercarriage_beam_height=30;
+undercarriage_overhang=100;
+undercarriage_caster_size=150;
+
 use <../shared/hollow_chair.scad>
 use <../shared/solid_chair.scad>
 use <../shared/double_step.scad>
-
+use <../shared/caster.scad>
+use <../shared/pivoting_caster.scad>
 // initial camera distance, rotation and translation
 $vpd=10000;
 $vpr=[73,0,-45];
@@ -91,6 +97,11 @@ module cel(
     los=ladder_outside_steps,
     ls=ladder_supports,
     loc=ladder_out_of_center,
+    
+    ubw=undercarriage_beam_width,
+    ubh=undercarriage_beam_height,
+    uoh=undercarriage_overhang,
+    ucs=undercarriage_caster_size,
 ){
     hab=h-(d/2)/tan(90-rs); // height at back
     vrt=rt/cos(rs); // vertical roof thickness
@@ -204,6 +215,29 @@ module cel(
         double_step(lw,lh,ld,lrd,loe,lis,los,ls);
     }
     
+    module undercarriage() {
+        union(){
+            translate([0,0,-ubh/2])
+                difference() {
+                    cube([w-uoh*2,d-uoh*2,ubh],true);
+                    translate([w/2-uoh-ubw/2,0,0])
+                        cube([w-(ubw+uoh)*2,d-(ubw+uoh)*2,2*ubh],true);
+                    translate([w/-2+uoh+ubw/2,0,0])
+                        cube([w-(ubw+uoh)*2,d-(ubw+uoh)*2,2*ubh],true);   
+                }
+                translate([(w-ubw)/2-uoh,(d-ubw)/2-uoh,-ubh-ucs])
+                    caster(ucs);
+                translate([(w-ubw)/-2+uoh,(d-ubw)/2-uoh,-ubh-ucs])
+                    caster(ucs);
+                
+                 translate([(w-ubw)/2-uoh,(d-ubw)/-2+uoh,-ubh-ucs])
+                    pivoting_caster(ucs,30);
+                translate([(w-ubw)/-2+uoh,(d-ubw)/-2+uoh,-ubh-ucs])
+                    pivoting_caster(ucs,30);
+        }
+    }
+    
+    translate([0,0,ucs+ubh])
     union() {
         difference(){
             union() {
@@ -216,6 +250,7 @@ module cel(
             table_punch();
         }
         chair();
+        undercarriage();
     }
 }
 
