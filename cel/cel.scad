@@ -231,9 +231,9 @@ module cel(
                     caster(ucs);
                 
                  translate([(w-ubw)/2-uoh,(d-ubw)/-2+uoh,-ubh-ucs])
-                    pivoting_caster(ucs,30);
+                    pivoting_caster(ucs,-35);
                 translate([(w-ubw)/-2+uoh,(d-ubw)/-2+uoh,-ubh-ucs])
-                    pivoting_caster(ucs,30);
+                    pivoting_caster(ucs,-35);
         }
     }
     
