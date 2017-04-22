@@ -39,7 +39,7 @@ module solid_chair(
     }
 
     module body() {
-        linear_extrude(w)
+        linear_extrude(height=w,convexity=10)
                 polygon([
                     [0,0],
                     [d-so-tan(90-ba)*(se-sh),0],
