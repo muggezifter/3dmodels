@@ -1,20 +1,22 @@
-cabin_width=1700;
+cabin_width=1500;
 cabin_depth=800;
-cabin_height=1900;
+cabin_height=1800;
 cabin_wall_thickness=20;
 cabin_bottom_thickness=30;
-cabin_roof_slope=30;
+cabin_roof_slope=20;
 seat_width=400;
 seat_depth=350;
 seat_thickness=30;
 seat_elevation=600;
-periscopes_width=2700;
-periscopes_height=1300;
-periscopes_diameter=350;
+periscopes_width=2600;
+periscopes_height=1350;
+periscopes_diameter=430;
 periscopes_wall_thickness=15;
 periscopes_elevation=900;
-undercarriage_width=1680;
-undercarriage_depth=640;
+periscope_flange_width=60;
+periscope_flange_distance=140;
+undercarriage_width=1400;
+undercarriage_depth=680;
 undercarriage_height=30;
 undercarriage_beam_width=100;
 castor_height=120;
@@ -29,6 +31,7 @@ use <../shared/double_periscope.scad>
 use <../shared/pivoting_caster.scad>
 use <../shared/caster.scad>
 use <modules/halfcabin.scad>
+
 module tweezitter(
     cw=cabin_width,
     cd=cabin_depth,
@@ -47,6 +50,8 @@ module tweezitter(
     pd=periscopes_diameter,
     pwt=periscopes_wall_thickness,
     pe=periscopes_elevation,
+    pfw=periscope_flange_width,
+    pfd=periscope_flange_distance,
     
     uw=undercarriage_width,
     ud=undercarriage_depth,
@@ -54,10 +59,28 @@ module tweezitter(
     ubw=undercarriage_beam_width,
     uch=castor_height,
 ){
-    module periscopes() {
-        translate([0,0,pe])
-        double_periscope(pw,ph,cw,pd,pwt);
+
+    module flanges(){
+        translate([0,0,-0.55*cwt]) difference() {
+            cube([pd-2*cwt+2*pfw,pd-2*cwt+2*pfw,cwt],true);
+            cube([pd-2*cwt,pd-2*cwt,2*cwt],true);
+        }
+        translate([0,0,0.55*cwt]) difference() {
+            cube([pd-2*cwt+2*pfw,pd-2*cwt+2*pfw,cwt],true);
+            cube([pd-2*cwt,pd-2*cwt,2*pwt],true);
+        }
     }
+    
+    module periscopes() {   
+        translate([0,0,pe]) union() {
+            double_periscope(pw,ph,cw,pd,pwt);
+            translate([(pw-pd)/2,0,ph/2-pfd/2]) flanges();
+            translate([(pw-pd)/2,0,ph/2+pfd/2]) flanges();
+            translate([(pw-pd)/-2,0,ph/2-pfd/2]) flanges();
+            translate([(pw-pd)/-2,0,ph/2+pfd/2]) flanges();
+        }
+    }
+
     module seat() {
         translate([0,0,se+st/2])
         cube([2*sd+cwt,sw,st],true);
