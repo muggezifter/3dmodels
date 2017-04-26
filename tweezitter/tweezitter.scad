@@ -19,7 +19,7 @@ undercarriage_width=1400;
 undercarriage_depth=680;
 undercarriage_height=30;
 undercarriage_beam_width=100;
-castor_height=120;
+caster_height=120;
 
 
 // initial camera distance, rotation and translation
@@ -57,7 +57,7 @@ module tweezitter(
     ud=undercarriage_depth,
     uh=undercarriage_height,
     ubw=undercarriage_beam_width,
-    uch=castor_height,
+    uch=caster_height,
 ){
 
     module flanges(){
