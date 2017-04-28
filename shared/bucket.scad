@@ -1,5 +1,6 @@
 height=200;
 diameter=350;
+$fa=4;
 
 module bucket(d=diameter,h=height) {
     re=d/25; // radius edge

@@ -1,5 +1,5 @@
 diameter=350;
-//$fa=4;
+$fa=4;
 
 module speaker(d=diameter){
     
