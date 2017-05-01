@@ -18,14 +18,10 @@ module sprekende_stoel(
     se=seat_elevation,
     sd=seat_depth,
     spd=speaker_diameter
-){
-    
-    
+){   
     ta=atan2(cd-sd,ch-se); //top_angle
-    ba=atan2(cd-sd,se); //bottom_angle
-    
-    
-    points=[[[0,0],
+    ba=atan2(cd-sd,se); //bottom_angle   
+    points=[[[0,0],//side
             [ct,0],
             [ct,se-ct],
             [cd-((se-ct)/se)*(cd-sd)-ct/cos(ba),se-ct],
@@ -37,7 +33,7 @@ module sprekende_stoel(
             [sd-ct/cos(ta),se],
             [0,se]
         ],[
-            [0,se-wt],
+            [0,se-wt],//seat and back
             [sd-(ct-wt)/cos(ta),se-wt],
             [cd-(ct-wt)/cos(ta)-(wt*tan(ta)),ch-wt],
             [cd-(wt*tan(ta)),ch-wt],
@@ -46,7 +42,7 @@ module sprekende_stoel(
             [sd-ct/cos(ta),se],
             [0,se]
         ],[
-            [ct,0],
+            [ct,0],//legs
             [ct,se-ct],
             [cd-((se-ct)/se)*(cd-sd)-ct/cos(ba),se-ct],
             [cd-ct/cos(ba),0],
@@ -58,8 +54,7 @@ module sprekende_stoel(
     module side() {
         linear_extrude(wt) polygon(points[0]);
     }
-
-    
+ 
     module chair() {
         union() {
             linear_extrude(height=cw,convexity=10) {
@@ -77,17 +72,18 @@ module sprekende_stoel(
     translate([-cw/2,-cd/2,0]) rotate([90,0,90]) union() {
         difference() {
             chair();
+            // speaker punch
             translate([
                 (points[1][2][0]+points[1][1][0])/2,
                 (points[1][2][1]+points[1][1][1])/2,
-                sd/2
-            ]) rotate([90,0,90-ba]) translate([0,0,-spd]/2) cylinder(spd,spd/2,spd/2);
+                cw/2
+            ]) rotate([90,0,90-ba]) translate([wt/2,0,-spd/2]) cylinder(spd,spd/2,spd/2);
         }
         translate([
             (points[1][2][0]+points[1][1][0])/2,
             (points[1][2][1]+points[1][1][1])/2,
             cw/2
-        ]) rotate([0,90,-ba]) speaker();
+        ]) rotate([0,90,-ba]) translate([0,wt/2,0]) speaker();
     }
 }
 
