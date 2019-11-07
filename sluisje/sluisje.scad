@@ -53,8 +53,8 @@ module sluisje(
             }
         }
         union() {
-            rotate([0,0,180]) door(0);    
-            door(30);
+            rotate([0,0,180]) door(10);    
+            door(40);
             tunnel();
         }
 

@@ -10,8 +10,7 @@ module speaker(d=diameter){
         }
     }
     r=d/2;
-    t=r/100;    r=d/2;
-    t=r/100;
+    t=r/100;   
     
     module driver() {
         translate([0,0,d/4.5])

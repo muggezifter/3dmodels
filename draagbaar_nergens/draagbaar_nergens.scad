@@ -1,6 +1,8 @@
 dodecahedron_height=1800;
 wall_thickness=5;
-hole_diameter=400;
+hole_diameter=350;
+
+use <../shared/highchair.scad>
 
 module draagbaar_nergens(
     dh=dodecahedron_height,
@@ -27,11 +29,15 @@ module draagbaar_nergens(
             }
     }
 
+translate([0,0,2800])
 difference() {
     dodecahedron(dh);
     dodecahedron(dh-2*wt);
     translate([0,0,dh/-1.1]) cylinder(dh,hd,hd);
 }
+
+translate([0,-600,0])
+highchair();
 }
 
 draagbaar_nergens();
