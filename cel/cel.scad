@@ -1,6 +1,6 @@
 width=1800;
 depth=1800;
-height=2200;
+cel_height=2200;
 roof_slope=32;
 wall_thickness=50;
 roof_thickness=20;
@@ -58,7 +58,7 @@ $vpt=[0,0,1000];
 module cel(
     w=width,
     d=depth,
-    h=height,
+    h=cel_height,
     rs=roof_slope,
     wt=wall_thickness,
     rt=roof_thickness,
@@ -119,71 +119,71 @@ module cel(
         d=cwt/4;
         translate([-w/2,ctw/2,0])
             rotate([0,0,-90])
-                translate([d,-d,-d])    
+           translate([d,-d,-d])    
                     solid_chair(cw-2*d,ch,cd,cbt,cta,cse,csh-2*d,cso,cba,cwt,cab,cah,caw-2*d,cao-2*d);   
     } 
 
     module box() { 
         translate([w/2,d/2,0])
-            rotate([90,0,-90])
-                union(){
-                    linear_extrude(height=w,convexity=10)
-                        union() {
-                            // front wall, bottom, back wall, back roof
-                            polygon([
-                                [0,0],
-                                [d,0],
-                                [d,fwh],
-                                [d-wt,fwh],
-                                [d-wt,ft],
-                                [wt,ft],
-                                [wt,ibh],
-                                [d/2-wt,h-tan(rs)*wt-vrt],
-                                [d/2-wt,h-wt],
-                                [d/2,h-wt],
-                                [d/2,h],
-                                [0,hab]
-                            ]);
-                            // front roof
-                            polygon([
-                                [d/2-wt,hab-tan(rs)*wt-vrt],
-                                [d-wt,h-tan(rs)*wt],
-                                [d-wt,h-wt],
-                                [d,h-wt],
-                                [d,h],
-                                [d/2,hab],
-                                [d/2,fwh],
-                                [d/2-wt,fwh]
-                            ]);
-                       }
-    
-        // mullions             
-        translate([0,0,(w-wt)/2])
-            linear_extrude(height=wt) {
-                union(){
-                    // back
+        rotate([90,0,-90])
+        union(){
+            linear_extrude(height=w) {
+                // front wall, bottom, back wall, back roof
+                polygon([
+                    [0,0],
+                    [d,0],
+                    [d,fwh],
+                    [d-wt,fwh],
+                    [d-wt,ft],
+                    [wt,ft],
+                    [wt,ibh],
+                    [d/2-wt,h-tan(rs)*wt-vrt],
+                    [d/2-wt,h-wt],
+                    [d/2,h-wt],
+                    [d/2,h],
+                    [0,hab]
+                ]);
+             }  
+             linear_extrude(height=w) {
                     polygon([
-                        [d/2-wt,fwh-rt/8],
-                        [d/2,fwh-rt/8],
-                        [d/2,h-wt+rt/8],
-                        [d/2-wt, h-wt+rt/8]
+                        [d/2-wt,hab-tan(rs)*wt-vrt],
+                        //[d-wt,h-tan(rs)*wt],
+                        [d-wt,h-wt],
+                        [d,h-wt],
+                        [d,h],
+                        [d/2,hab],
+                        [d/2,fwh],
+                        [d/2-wt,fwh]
                     ]);
-                    // front
-                    polygon([
-                        [d-wt,fwh-rt/8],
-                        [d,fwh-rt/8],
-                        [d,h-wt+rt/8],
-                        [d-wt, h-wt+rt/8]
-                    ]);
+              }
+              // mullions             
+              translate([0,0,(w-wt)/2]) {
+                linear_extrude(height=wt) {
+                    union(){
+                        // back
+                        polygon([
+                            [d/2-wt,fwh-rt/8],
+                            [d/2,fwh-rt/8],
+                            [d/2,h-wt+rt/8],
+                            [d/2-wt, h-wt+rt/8]
+                        ]);
+                        // front
+                        polygon([
+                            [d-wt,fwh-rt/8],
+                            [d,fwh-rt/8],
+                            [d,h-wt+rt/8],
+                            [d-wt, h-wt+rt/8]
+                        ]);
+                    }
                 }
-            }   
+            } 
         // right wall   
-        linear_extrude(height=wt)
+        linear_extrude(height=wt) {
             polygon([[0,0],[d,0],[d,h],[d/2,hab],[d/2,h],[0,hab]]);
+        }
         // left wall
-        translate([0,0,w-wt])   
-            linear_extrude(height=wt)
-                polygon([[0,0],[d,0],[d,h],[d/2,hab],[d/2,h],[0,hab]]);
+        translate([0,0,w-wt])           linear_extrude(height=wt)
+        polygon([[0,0],[d,0],[d,h],[d/2,hab],[d/2,h],[0,hab]]);
         }
     }
 
@@ -245,7 +245,6 @@ module cel(
                 table();
                 ladder();
             }
-
             chair_punch();
             table_punch();
         }
@@ -256,6 +255,6 @@ module cel(
 
 //difference() {
     cel();
-    //translate([0,0,height])
-    //cube([height,height,height],true);
+//    translate([0,0,height])
+//    cube([height,height,height],true);
 //}
